@@ -35,7 +35,7 @@ func main() {
 	var input int
 
 	conn, err := connect()
-	//migrate(conn)
+	migrate(conn)
 	booksM := model.BooksModel{conn}
 	booksC := controller.BooksController{booksM}
 	if err != nil {

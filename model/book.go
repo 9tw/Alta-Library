@@ -7,7 +7,7 @@ import (
 )
 
 type Books struct {
-	ID     int
+	gorm.Model
 	Title  string
 	ISBN   string
 	Author string
@@ -22,7 +22,7 @@ type BooksModel struct {
 
 func (bm BooksModel) GetAll() ([]Books, error) {
 	var res []Books
-	err := bm.DB.Table("books").Select("id_book", "title", "isbn", "author", "image", "status", "user_id").Model(&Books{}).Find(&res).Error
+	err := bm.DB.Table("books").Select("id", "title", "isbn", "author", "image", "status", "user_id").Model(&Books{}).Find(&res).Error
 	if err != nil {
 		fmt.Println("error on query", err.Error())
 		return nil, err
@@ -32,7 +32,7 @@ func (bm BooksModel) GetAll() ([]Books, error) {
 
 func (bm BooksModel) Search(key string) ([]Books, error) {
 	var res []Books
-	err := bm.DB.Table("books").Select("id_book", "title", "isbn", "author", "image", "status", "user_id").Where("title LIKE ?", "%"+key+"%").Model(&Books{}).Find(&res).Error
+	err := bm.DB.Table("books").Select("id", "title", "isbn", "author", "image", "status", "user_id").Where("title LIKE ?", "%"+key+"%").Model(&Books{}).Find(&res).Error
 	if err != nil {
 		fmt.Println("error on query", err.Error())
 		return nil, err
