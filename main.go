@@ -4,7 +4,25 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+	"main.go/controller"
+	"main.go/model"
 )
+
+func connect() (*gorm.DB, error) {
+	dsn := "root:@ardhi21091996@tcp(127.0.0.1:3306)/alta_library"
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		return nil, err
+	}
+	return db, err
+}
+
+func migrate(db *gorm.DB) {
+	db.AutoMigrate(&model.Users{})
+}
 
 func clear() {
 	cmd := exec.Command("clear")
@@ -15,6 +33,14 @@ func clear() {
 func main() {
 	var run bool = true
 	var input int
+
+	conn, err := connect()
+	migrate(conn)
+	usersM := model.UsersModel{conn}
+	usersC := controller.UsersController{usersM}
+	if err != nil {
+		fmt.Println("cannot connect to DB", err.Error())
+	}
 
 	for run {
 		fmt.Println("--- Welcome to Alta Library ---")
@@ -65,6 +91,11 @@ func main() {
 			fmt.Scan(&email)
 			fmt.Print("Password: ")
 			fmt.Scan(&password)
+			res, err := usersC.Search(email, password)
+			if err != nil {
+				fmt.Println("some error on get", err.Error())
+			}
+			fmt.Println(res)
 		case 9:
 			clear()
 			run = false
