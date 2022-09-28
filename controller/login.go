@@ -21,3 +21,11 @@ func (uc UsersController) Search(key, Password string) ([]model.Res, error) {
 	}
 	return res, nil
 }
+
+func (uc UsersController) Register(newData model.Users) ([]model.Res, error) {
+	res, err := uc.Model.AddAccount(newData)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}

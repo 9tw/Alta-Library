@@ -70,6 +70,7 @@ func main() {
 			var phone string
 			var address string
 			var password string
+			var status string
 			fmt.Println("--- Register to Alta Library ---")
 			fmt.Println("")
 			fmt.Print("Email: ")
@@ -82,6 +83,27 @@ func main() {
 			fmt.Scan(&address)
 			fmt.Print("Password: ")
 			fmt.Scan(&password)
+			fmt.Print("Status: ")
+			fmt.Scan(&status)
+			res, err := usersC.Register(model.Users{
+
+				Model:    gorm.Model{},
+				Email:    email,
+				Name:     name,
+				Phone:    phone,
+				Address:  address,
+				Password: password,
+				Status:   status,
+			})
+			//  res, err := usersC.Register(email, name, phone, address, password, status )
+			if err != nil {
+				fmt.Println("some error on get", err.Error)
+			}
+			fmt.Println(res)
+			fmt.Println("==========================================")
+			fmt.Println("ANDA SUKSES MELAKUKAN PENDAFTARAN")
+			fmt.Println("SELAMAT MENIKMATI FITUR DAN LAYANAN KAMI")
+			fmt.Println("==========================================")
 		case 4:
 			var email string
 			var password string
