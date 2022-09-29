@@ -61,4 +61,49 @@ func (um UsersModel) AddAccount(newData Users) ([]Res, error) {
 		return nil, err
 	}
 	return res, nil
+
+}
+func (um UsersModel) Update(editData Users) ([]Res, error) {
+	var res []Res
+	err := um.DB.Exec("UPDATE users SET name = ? where phone = ?",
+		editData.Name, editData.Phone).Error
+	if err != nil {
+		fmt.Println("error on query", err.Error())
+		return nil, err
+	}
+	return res, nil
+}
+
+func (um UsersModel) UpdatePhone(editNomor Users) ([]Res, error) {
+	var res []Res
+	err := um.DB.Exec("UPDATE users SET phone = ? where password = ?",
+		editNomor.Phone, editNomor.Password).Error
+	if err != nil {
+		fmt.Println("error on query", err.Error())
+		return nil, err
+	}
+	return res, nil
+}
+
+func (um UsersModel) UpdateAlamat(editData Users) ([]Res, error) {
+	var res []Res
+	err := um.DB.Exec("UPDATE users SET address = ? where password = ?",
+		editData.Address, editData.Password).Error
+	if err != nil {
+		fmt.Println("error on query", err.Error())
+		return nil, err
+	}
+	return res, nil
+}
+
+
+func (um UsersModel) UpdateStatus(editData Users) ([]Res, error) {
+	var res []Res
+	err := um.DB.Exec("UPDATE users SET status = ? where password = ?",
+		editData.Status, editData.Password).Error
+	if err != nil {
+		fmt.Println("error on query", err.Error())
+		return nil, err
+	}
+	return res, nil
 }

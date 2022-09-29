@@ -31,3 +31,36 @@ func (uc UsersController) Register(newData model.Users) ([]model.Res, error) {
 	}
 	return res, nil
 }
+
+func (uc UsersController) UpdateProfile(updateData model.Users) ([]model.Res, error) {
+	res, err := uc.Model.Update(updateData)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
+func (uc UsersController) UbahPhone(updateNomor model.Users) ([]model.Res, error) {
+	res, err := uc.Model.UpdatePhone(updateNomor)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
+func (uc UsersController) UbahAlamat(updateData model.Users) ([]model.Res, error) {
+	res, err := uc.Model.UpdateAlamat(updateData)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
+
+func (uc UsersController) UbahStatus(updateData model.Users) ([]model.Res, error) {
+	res, err := uc.Model.UpdateStatus(updateData)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}

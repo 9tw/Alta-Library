@@ -118,65 +118,165 @@ func main() {
 				fmt.Println("some error on get", err.Error())
 			}
 			fmt.Println(res)
-			// for run {
-			// 	fmt.Println("===========================================")
-			// 	fmt.Println("\tWelcome to Alta Library")
-			// 	fmt.Println("===========================================")
-			// 	fmt.Println("")
-			// 	fmt.Println("1. Edit profile")
-			// 	fmt.Println("2. Non Aktif akun")
-			// 	fmt.Println("3. Pinjam Buku")
-			// 	fmt.Println("4. Liat Buku Yang Dipinjam")
-			// 	fmt.Println("5. Tambah Buku")
-			// 	fmt.Println("6. Edit Buku")
-			// 	fmt.Println("7. Hapus Buku")
-			// 	fmt.Println("0. Exit")
-			// 	fmt.Println("")
-			// 	fmt.Print("Enter Input: ")
-			// 	fmt.Scan(&input)
+			for run {
+				fmt.Println("===========================================")
+				fmt.Println("\tWelcome to Alta Library")
+				fmt.Println("===========================================")
+				fmt.Println("")
+				fmt.Println("1. Edit profile")
+				fmt.Println("2. Non Aktif akun")
+				fmt.Println("3. Pinjam Buku")
+				fmt.Println("4. Liat Buku Yang Dipinjam")
+				fmt.Println("5. Tambah Buku")
+				fmt.Println("6. Edit Buku")
+				fmt.Println("7. Hapus Buku")
+				fmt.Println("0. Exit")
+				fmt.Println("")
+				fmt.Print("Enter Input: ")
+				fmt.Scan(&input)
 
-			// 	switch input {
-			// 	case 1:
-			// 		fmt.Println("==============================")
-			// 		fmt.Println("\tEDIT PROFILE")
-			// 		fmt.Println("==============================")
+				switch input {
+				case 1:
+					fmt.Println("==============================")
+					fmt.Println("\tEDIT PROFILE")
+					fmt.Println("==============================")
 
-			// 	case 2:
-			// 		fmt.Println("================================")
-			// 		fmt.Println("\tNON AKTIF AKUN")
-			// 		fmt.Println("================================")
+					fmt.Println("Bagian Yang Di Edit : \n1. Name\n2. Phone\n3. Address\n4. Status")
+					fmt.Print("Masukkan pilihan:")
+					var pilih int
+					fmt.Scan(&pilih)
 
-			// 	case 3:
-			// 		fmt.Println("============================")
-			// 		fmt.Println("\tPINJAM BUKU")
-			// 		fmt.Println("============================")
+					switch pilih {
+					case 1:
+						{
+							up := model.Users{}
+							fmt.Println("")
+							fmt.Println("Nama Terbaru:")
+							fmt.Scan(&up.Name)
+							fmt.Println("Masukan Phone Anda :")
+							fmt.Scan(&up.Phone)
 
-			// 	case 4:
-			// 		fmt.Println("=========================================")
-			// 		fmt.Println("\tLIHAT BUKU YANG DIPINJAM")
-			// 		fmt.Println("=========================================")
+							res, err := usersC.UpdateProfile(model.Users{
+								Model:    gorm.Model{},
+								Email:    email,
+								Name:     up.Name,
+								Phone:    up.Phone,
+								Address:  up.Address,
+								Password: up.Password,
+								Status:   up.Status,
+							})
+							if err != nil {
+								fmt.Println("error", err.Error())
+							}
+							fmt.Println(res)
+						}
+					case 2:
+						{
+							up := model.Users{}
+							fmt.Println("")
+							fmt.Println("Masukan Phone Terbaru :")
+							fmt.Scan(&up.Phone)
+							fmt.Println("Masukan Password Anda :")
+							fmt.Scan(&up.Password)
 
-			// 	case 5:
-			// 		fmt.Println("============================")
-			// 		fmt.Println("\tTAMBAH BUKU")
-			// 		fmt.Println("============================")
+							res, err := usersC.UbahPhone(model.Users{
+								Model:    gorm.Model{},
+								Email:    email,
+								Name:     up.Name,
+								Phone:    up.Phone,
+								Address:  up.Address,
+								Password: up.Password,
+								Status:   up.Status,
+							})
+							if err != nil {
+								fmt.Println("error", err.Error())
+							}
+							fmt.Println(res)
+						}
+					case 3:
+						{
+							up := model.Users{}
+							fmt.Println("")
+							fmt.Println("Masukan Address Terbaru :")
+							fmt.Scan(&up.Address)
+							fmt.Println("Masukan Password Anda :")
+							fmt.Scan(&up.Password)
 
-			// 	case 6:
-			// 		fmt.Println("============================")
-			// 		fmt.Println("\tEDIT BUKU")
-			// 		fmt.Println("============================")
+							res, err := usersC.UbahAlamat(model.Users{
+								Model:    gorm.Model{},
+								Email:    email,
+								Name:     up.Name,
+								Phone:    up.Phone,
+								Address:  up.Address,
+								Password: up.Password,
+								Status:   up.Status,
+							})
+							if err != nil {
+								fmt.Println("error", err.Error())
+							}
+							fmt.Println(res)
+						}
+					case 4:
+						{
+							up := model.Users{}
+							fmt.Println("")
+							fmt.Println("Masukan Status Terbaru :")
+							fmt.Scan(&up.Status)
+							fmt.Println("Masukan Password Anda :")
+							fmt.Scan(&up.Password)
 
-			// 	case 7:
-			// 		fmt.Println("============================")
-			// 		fmt.Println("\tHAPUS BUKU")
-			// 		fmt.Println("============================")
+							res, err := usersC.UbahStatus(model.Users{
+								Model:    gorm.Model{},
+								Email:    email,
+								Name:     up.Name,
+								Phone:    up.Phone,
+								Address:  up.Address,
+								Password: up.Password,
+								Status:   up.Status,
+							})
+							if err != nil {
+								fmt.Println("error", err.Error())
+							}
+							fmt.Println(res)
+						}
+					}
 
-			// 	case 0:
-			// 		clear()
-			// 		run = false
-			// 		fmt.Println("Byee")
-			// 	}
-			// }
+				case 2:
+					fmt.Println("================================")
+					fmt.Println("\tNON AKTIF AKUN")
+					fmt.Println("================================")
+
+				case 3:
+					fmt.Println("============================")
+					fmt.Println("\tPINJAM BUKU")
+					fmt.Println("============================")
+
+				case 4:
+					fmt.Println("=========================================")
+					fmt.Println("\tLIHAT BUKU YANG DIPINJAM")
+					fmt.Println("=========================================")
+
+				case 5:
+					fmt.Println("============================")
+					fmt.Println("\tTAMBAH BUKU")
+					fmt.Println("============================")
+
+				case 6:
+					fmt.Println("============================")
+					fmt.Println("\tEDIT BUKU")
+					fmt.Println("============================")
+
+				case 7:
+					fmt.Println("============================")
+					fmt.Println("\tHAPUS BUKU")
+					fmt.Println("============================")
+
+				case 0:
+					clear()
+					run = false
+					fmt.Println("Byee")
+				}
+			}
 		case 9:
 			clear()
 			run = false
