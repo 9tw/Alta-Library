@@ -1,6 +1,8 @@
 package controller
 
-import "main.go/model"
+import (
+	"main.go/model"
+)
 
 type UsersController struct {
 	Model model.UsersModel
