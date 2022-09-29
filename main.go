@@ -12,7 +12,7 @@ import (
 )
 
 func connect() (*gorm.DB, error) {
-	dsn := "root:@tcp(127.0.0.1:3306)/library?parseTime=true"
+	dsn := "root:@ardhi21091996@tcp(127.0.0.1:3306)/alta_library"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		return nil, err
@@ -40,8 +40,8 @@ func main() {
 	migrate(conn)
 	booksM := model.BooksModel{conn}
 	booksC := controller.BooksController{booksM}
-	borrowsM := model.BorrowsModel{conn}
-	borrowsC := controller.BorrowsController{borrowsM}
+	// borrowsM := model.BorrowsModel{conn}
+	// borrowsC := controller.BorrowsController{borrowsM}
 	usersM := model.UsersModel{conn}
 	usersC := controller.UsersController{usersM}
 	if err != nil {
@@ -280,15 +280,15 @@ func main() {
 							fmt.Println("MASUKAN PASSWORD ANDA :")
 							fmt.Scan(&up.Password)
 
-							res, err := usersC.UpdateProfile(model.Users{
-								Model:    gorm.Model{},
-								Email:    email,
-								Name:     up.Name,
-								Phone:    up.Phone,
-								Address:  up.Address,
-								Password: up.Password,
-								Status:   up.Status,
-							})
+							// res, err := usersC.NonAktifAkun(model.Users{
+							// 	Model:    gorm.Model{},
+							// 	Email:    email,
+							// 	Name:     up.Name,
+							// 	Phone:    up.Phone,
+							// 	Address:  up.Address,
+							// 	Password: up.Password,
+							// 	Status:   up.Status,
+							//})
 							if err != nil {
 								fmt.Println("error", err.Error())
 							}
@@ -331,7 +331,10 @@ func main() {
 				case 0:
 					clear()
 					run = false
-					fmt.Println("Thanks Guyss")
+					fmt.Println("============================")
+					fmt.Println("\tThanks Guyss")
+					fmt.Println("============================")
+
 				}
 			}
 		case 0:

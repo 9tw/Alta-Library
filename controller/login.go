@@ -56,7 +56,6 @@ func (uc UsersController) UbahAlamat(updateData model.Users) ([]model.Go, error)
 	return res, nil
 }
 
-
 func (uc UsersController) UbahStatus(updateData model.Users) ([]model.Go, error) {
 	res, err := uc.Model.UpdateStatus(updateData)
 	if err != nil {
@@ -65,10 +64,10 @@ func (uc UsersController) UbahStatus(updateData model.Users) ([]model.Go, error)
 	return res, nil
 }
 
-func (uc UsersController) NonAktif(updateAkun model.Users) ([]model.Go, error) {
-	res, err := uc.Model.NonAktifAkun(updateAkun)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
-}
+// func (uc UsersController) NonAktifAkun(id model.Users) ([]model.Go, error) {
+// 	res, err := uc.Model.NonAktif(id)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	return res, nil
+// }

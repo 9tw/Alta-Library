@@ -107,13 +107,13 @@ func (um UsersModel) UpdateStatus(editData Users) ([]Go, error) {
 	return res, nil
 }
 
-func (um UsersModel) NonAktifAkun(updateAkun Users) ([]Go, error) {
-	var res []Go
-	err := um.DB.Exec("",
-		time.Now(), updateAkun.ID).Error
-	if err != nil {
-		fmt.Println("error on query", err.Error())
-		return nil, err
-	}
-	return res, nil
-}
+// func (um UsersModel) NonAktif(id Users) ([]Go, error) {
+// 	var res []Go
+// 	err := um.DB.Exec("",
+// 		id.Name, time.Now()).Error
+// 	if err != nil {
+// 		fmt.Println("error on query", err.Error())
+// 		return nil, err
+// 	}
+// 	return res, nil
+// }
