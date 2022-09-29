@@ -96,7 +96,7 @@ func main() {
 				Status:   status,
 			})
 			//  res, err := usersC.Register(email, name, phone, address, password, status )
-			if err != nil {
+			if len(res) > 0 {
 				fmt.Println("some error on get", err.Error)
 			}
 			fmt.Println(res)
@@ -246,6 +246,47 @@ func main() {
 					fmt.Println("\tNON AKTIF AKUN")
 					fmt.Println("================================")
 
+					fmt.Println("MENU : \n1. NON AKTIF KAN AKUN\n2. TIDAK")
+					fmt.Print("Masukkan pilihan:")
+
+					var pilih int
+					fmt.Scan(&pilih)
+
+					switch pilih {
+					case 1:
+						{
+							up := model.Users{}
+							fmt.Println("")
+							fmt.Println("MASUKAN NAMA ANDA :")
+							fmt.Scan(&up.Name)
+							fmt.Println("MASUKAN PHONE ANDA :")
+							fmt.Scan(&up.Phone)
+							fmt.Println("MASUKAN PASSWORD ANDA :")
+							fmt.Scan(&up.Password)
+
+							res, err := usersC.UpdateProfile(model.Users{
+								Model:    gorm.Model{},
+								Email:    email,
+								Name:     up.Name,
+								Phone:    up.Phone,
+								Address:  up.Address,
+								Password: up.Password,
+								Status:   up.Status,
+							})
+							if err != nil {
+								fmt.Println("error", err.Error())
+							}
+							fmt.Println(res)
+						}
+
+					case 2:
+						{
+							clear()
+							run = false
+							fmt.Println("Exit")
+						}
+					}
+
 				case 3:
 					fmt.Println("============================")
 					fmt.Println("\tPINJAM BUKU")
@@ -274,7 +315,7 @@ func main() {
 				case 0:
 					clear()
 					run = false
-					fmt.Println("Byee")
+					fmt.Println("Thanks Guyss")
 				}
 			}
 		case 9:

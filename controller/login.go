@@ -64,3 +64,11 @@ func (uc UsersController) UbahStatus(updateData model.Users) ([]model.Res, error
 	}
 	return res, nil
 }
+
+func (uc UsersController) NonAktif(updateAkun model.Users) ([]model.Res, error) {
+	res, err := uc.Model.NonAktifAkun(updateAkun)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}

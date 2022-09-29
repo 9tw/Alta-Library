@@ -96,11 +96,21 @@ func (um UsersModel) UpdateAlamat(editData Users) ([]Res, error) {
 	return res, nil
 }
 
-
 func (um UsersModel) UpdateStatus(editData Users) ([]Res, error) {
 	var res []Res
 	err := um.DB.Exec("UPDATE users SET status = ? where password = ?",
 		editData.Status, editData.Password).Error
+	if err != nil {
+		fmt.Println("error on query", err.Error())
+		return nil, err
+	}
+	return res, nil
+}
+
+func (um UsersModel) NonAktifAkun(updateAkun Users) ([]Res, error) {
+	var res []Res
+	err := um.DB.Exec("",
+		time.Now(), updateAkun.ID).Error
 	if err != nil {
 		fmt.Println("error on query", err.Error())
 		return nil, err

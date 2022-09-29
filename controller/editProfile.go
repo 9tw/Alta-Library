@@ -37,3 +37,12 @@ func (ep EditProfileController) UbahStatus(updateData model.Users) ([]model.Res,
 	}
 	return res, nil
 }
+
+func (ep EditProfileController) NonAktif(updateAkun model.Users) ([]model.Res, error)  {
+	res, err := ep.Model.NonAktifAkun(updateAkun)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+	
+}
