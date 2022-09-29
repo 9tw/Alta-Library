@@ -12,7 +12,7 @@ import (
 )
 
 func connect() (*gorm.DB, error) {
-	dsn := "root:@ardhi21091996@tcp(127.0.0.1:3306)/alta_library"
+	dsn := "root:@tcp(127.0.0.1:3306)/library?parseTime=true"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		return nil, err
@@ -21,6 +21,8 @@ func connect() (*gorm.DB, error) {
 }
 
 func migrate(db *gorm.DB) {
+	db.AutoMigrate(&model.Books{})
+	db.AutoMigrate(&model.Borrows{})
 	db.AutoMigrate(&model.Users{})
 }
 
@@ -36,6 +38,10 @@ func main() {
 
 	conn, err := connect()
 	migrate(conn)
+	booksM := model.BooksModel{conn}
+	booksC := controller.BooksController{booksM}
+	borrowsM := model.BorrowsModel{conn}
+	borrowsC := controller.BorrowsController{borrowsM}
 	usersM := model.UsersModel{conn}
 	usersC := controller.UsersController{usersM}
 	if err != nil {
@@ -49,7 +55,7 @@ func main() {
 		fmt.Println("2. List All Books")
 		fmt.Println("3. Register")
 		fmt.Println("4. Login")
-		fmt.Println("9. Exit")
+		fmt.Println("0. Exit")
 		fmt.Println("")
 		fmt.Print("Enter Input: ")
 		fmt.Scan(&input)
@@ -61,9 +67,19 @@ func main() {
 			fmt.Println("")
 			fmt.Print("Keyword: ")
 			fmt.Scan(&keyword)
+			res, err := booksC.Search(keyword)
+			if err != nil {
+				fmt.Println("Some error on get", err.Error())
+			}
+			fmt.Println(res)
 		case 2:
 			fmt.Println("--- List All Books in Alta Library ---")
 			fmt.Println("")
+			res, err := booksC.GetAll()
+			if err != nil {
+				fmt.Println("Some error on get", err.Error())
+			}
+			fmt.Println(res)
 		case 3:
 			var email string
 			var name string
@@ -177,7 +193,7 @@ func main() {
 			// 		fmt.Println("Byee")
 			// 	}
 			// }
-		case 9:
+		case 0:
 			clear()
 			run = false
 			fmt.Println("Bye, see u again.")
