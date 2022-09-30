@@ -12,7 +12,7 @@ import (
 )
 
 func connect() (*gorm.DB, error) {
-	dsn := "root:@tcp(127.0.0.1:3306)/library?parseTime=true"
+	dsn := "root:@ardhi21091996@tcp(127.0.0.1:3306)/alta_library"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		return nil, err
@@ -40,8 +40,8 @@ func main() {
 	migrate(conn)
 	booksM := model.BooksModel{conn}
 	booksC := controller.BooksController{booksM}
-	borrowsM := model.BorrowsModel{conn}
-	borrowsC := controller.BorrowsController{borrowsM}
+	// borrowsM := model.BorrowsModel{conn}
+	// borrowsC := controller.BorrowsController{borrowsM}
 	usersM := model.UsersModel{conn}
 	usersC := controller.UsersController{usersM}
 	if err != nil {
@@ -113,7 +113,7 @@ func main() {
 				Password: password,
 			})
 			//  res, err := usersC.Register(email, name, phone, address, password, status )
-			if err != nil {
+			if len(res) > 0 {
 				fmt.Println("some error on get", err.Error)
 			}
 			fmt.Println(res)
@@ -157,14 +157,155 @@ func main() {
 
 					switch input {
 					case 1:
-						fmt.Println("==============================")
-						fmt.Println("\tEDIT PROFILE")
-						fmt.Println("==============================")
+					fmt.Println("==============================")
+					fmt.Println("\tEDIT PROFILE")
+					fmt.Println("==============================")
+
+					fmt.Println("Bagian Yang Di Edit : \n1. Name\n2. Phone\n3. Address\n4. Status")
+					fmt.Print("Masukkan pilihan:")
+					var pilih int
+					fmt.Scan(&pilih)
+
+					switch pilih {
+					case 1:
+						{
+							up := model.Users{}
+							fmt.Println("")
+							fmt.Println("Nama Terbaru:")
+							fmt.Scan(&up.Name)
+							fmt.Println("Masukan Phone Anda :")
+							fmt.Scan(&up.Phone)
+
+							res, err := usersC.UpdateProfile(model.Users{
+								Model:    gorm.Model{},
+								Email:    email,
+								Name:     up.Name,
+								Phone:    up.Phone,
+								Address:  up.Address,
+								Password: up.Password,
+								Status:   up.Status,
+							})
+							if err != nil {
+								fmt.Println("error", err.Error())
+							}
+							fmt.Println(res)
+						}
+					case 2:
+						{
+							up := model.Users{}
+							fmt.Println("")
+							fmt.Println("Masukan Phone Terbaru :")
+							fmt.Scan(&up.Phone)
+							fmt.Println("Masukan Password Anda :")
+							fmt.Scan(&up.Password)
+
+							res, err := usersC.UbahPhone(model.Users{
+								Model:    gorm.Model{},
+								Email:    email,
+								Name:     up.Name,
+								Phone:    up.Phone,
+								Address:  up.Address,
+								Password: up.Password,
+								Status:   up.Status,
+							})
+							if err != nil {
+								fmt.Println("error", err.Error())
+							}
+							fmt.Println(res)
+						}
+					case 3:
+						{
+							up := model.Users{}
+							fmt.Println("")
+							fmt.Println("Masukan Address Terbaru :")
+							fmt.Scan(&up.Address)
+							fmt.Println("Masukan Password Anda :")
+							fmt.Scan(&up.Password)
+
+							res, err := usersC.UbahAlamat(model.Users{
+								Model:    gorm.Model{},
+								Email:    email,
+								Name:     up.Name,
+								Phone:    up.Phone,
+								Address:  up.Address,
+								Password: up.Password,
+								Status:   up.Status,
+							})
+							if err != nil {
+								fmt.Println("error", err.Error())
+							}
+							fmt.Println(res)
+						}
+					case 4:
+						{
+							up := model.Users{}
+							fmt.Println("")
+							fmt.Println("Masukan Status Terbaru :")
+							fmt.Scan(&up.Status)
+							fmt.Println("Masukan Password Anda :")
+							fmt.Scan(&up.Password)
+
+							res, err := usersC.UbahStatus(model.Users{
+								Model:    gorm.Model{},
+								Email:    email,
+								Name:     up.Name,
+								Phone:    up.Phone,
+								Address:  up.Address,
+								Password: up.Password,
+								Status:   up.Status,
+							})
+							if err != nil {
+								fmt.Println("error", err.Error())
+							}
+							fmt.Println(res)
+						}
+					}
 
 					case 2:
-						fmt.Println("================================")
-						fmt.Println("\tNON AKTIF AKUN")
-						fmt.Println("================================")
+					fmt.Println("================================")
+					fmt.Println("\tNON AKTIF AKUN")
+					fmt.Println("================================")
+
+					fmt.Println("MENU : \n1. NON AKTIF KAN AKUN\n2. TIDAK")
+					fmt.Print("Masukkan pilihan:")
+
+					var pilih int
+					fmt.Scan(&pilih)
+
+					switch pilih {
+					case 1:
+						{
+							up := model.Users{}
+							fmt.Println("")
+							fmt.Println("MASUKAN NAMA ANDA :")
+							fmt.Scan(&up.Name)
+							fmt.Println("MASUKAN PHONE ANDA :")
+							fmt.Scan(&up.Phone)
+							fmt.Println("MASUKAN PASSWORD ANDA :")
+							fmt.Scan(&up.Password)
+
+							// res, err := usersC.NonAktifAkun(model.Users{
+							// 	Model:    gorm.Model{},
+							// 	Email:    email,
+							// 	Name:     up.Name,
+							// 	Phone:    up.Phone,
+							// 	Address:  up.Address,
+							// 	Password: up.Password,
+							// 	Status:   up.Status,
+							//})
+							if err != nil {
+								fmt.Println("error", err.Error())
+							}
+							fmt.Println(res)
+						}
+
+					case 2:
+						{
+							clear()
+							run = false
+							fmt.Println("Exit")
+						}
+					}
 
 					case 3:
 						fmt.Println("============================")

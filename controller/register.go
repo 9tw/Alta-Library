@@ -6,7 +6,7 @@ type RegisterController struct {
 	Model model.UsersModel
 }
 
-func (rc RegisterController) Register(data model.Users) ([]model.Ress, error) {
+func (rc RegisterController) Register(data model.Users) ([]model.Go, error) {
 	res, err := rc.Model.AddAccount(data)
 	if err != nil {
 		return nil, err
