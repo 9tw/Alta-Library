@@ -22,6 +22,14 @@ func (bc BooksController) GetUnBorrow() ([]model.Res, error) {
 	return res, nil
 }
 
+func (bc BooksController) OwnBook(id int) ([]model.Res, error) {
+	res, err := bc.Model.OwnBook(id)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
 func (bc BooksController) Search(key string) ([]model.Res, error) {
 	res, err := bc.Model.Search(key)
 	if err != nil {

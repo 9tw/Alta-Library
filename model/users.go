@@ -19,12 +19,11 @@ type Users struct {
 }
 
 type Go struct {
-	Email    string
-	Name     string
-	Phone    string
-	Address  string
-	Password string
-	Status   int
+	ID      int
+	Email   string
+	Name    string
+	Phone   string
+	Address string
 }
 
 type UsersModel struct {
@@ -43,7 +42,7 @@ func (um UsersModel) GetAll() ([]Go, error) {
 
 func (um UsersModel) LoginUser(key, Password string) ([]Go, error) {
 	var res []Go
-	err := um.DB.Table("users").Select("id", "email", "name", "address", "status").Where("email = ? AND password = ? AND deleted_at IS NULL", key, Password).Model(&Users{}).Find(&res).Error
+	err := um.DB.Table("users").Select("id", "email", "name", "phone", "address").Where("email = ? AND password = ? AND deleted_at IS NULL", key, Password).Model(&Users{}).Find(&res).Error
 	if err != nil {
 		fmt.Println("error on query", err.Error())
 		return nil, err
