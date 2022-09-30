@@ -43,7 +43,7 @@ func (um UsersModel) GetAll() ([]Go, error) {
 
 func (um UsersModel) LoginUser(key, Password string) ([]Go, error) {
 	var res []Go
-	err := um.DB.Table("users").Select("id", "email", "name", "address", "status").Where("email = ? and password = ?", key, Password).Model(&Users{}).Find(&res).Error
+	err := um.DB.Table("users").Select("id", "email", "name", "address", "status").Where("email = ? AND password = ? AND deleted_at IS NULL", key, Password).Model(&Users{}).Find(&res).Error
 	if err != nil {
 		fmt.Println("error on query", err.Error())
 		return nil, err
@@ -108,13 +108,11 @@ func (um UsersModel) UpdateStatus(editData Users) ([]Go, error) {
 	return res, nil
 }
 
-// func (um UsersModel) NonAktif(id Users) ([]Go, error) {
-// 	var res []Go
-// 	err := um.DB.Exec("",
-// 		id.Name, time.Now()).Error
-// 	if err != nil {
-// 		fmt.Println("error on query", err.Error())
-// 		return nil, err
-// 	}
-// 	return res, nil
-// }
+func (um UsersModel) NonAktif(id int) error {
+	err := um.DB.Exec("UPDATE users SET deleted_at = ? WHERE id = ?", time.Now(), id).Error
+	if err != nil {
+		fmt.Println("error on query", err.Error())
+		return nil
+	}
+	return nil
+}

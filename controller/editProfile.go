@@ -38,11 +38,10 @@ func (ep EditProfileController) UbahStatus(updateData model.Users) ([]model.Go, 
 	return res, nil
 }
 
-// func (ep EditProfileController) NonAktif(id model.Users) ([]model.Go, error) {
-// 	res, err := ep.Model.NonAktif(id)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	return res, nil
-
-// }
+func (ep EditProfileController) NonAktif(id int) error {
+	err := ep.Model.NonAktif(id)
+	if err != nil {
+		return nil
+	}
+	return nil
+}
