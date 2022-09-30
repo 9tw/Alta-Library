@@ -15,7 +15,7 @@ type Users struct {
 	Phone    string
 	Address  string
 	Password string
-	Status   string
+	Status   int
 }
 
 type Go struct {
@@ -24,7 +24,7 @@ type Go struct {
 	Phone    string
 	Address  string
 	Password string
-	Status   string
+	Status   int
 }
 
 type UsersModel struct {
@@ -51,8 +51,8 @@ func (um UsersModel) LoginUser(key, Password string) ([]Go, error) {
 	return res, nil
 
 }
-func (um UsersModel) AddAccount(newData Users) ([]Go, error) {
 
+func (um UsersModel) AddAccount(newData Users) ([]Go, error) {
 	var res []Go
 	err := um.DB.Exec("INSERT INTO users (email, name, phone, address, password, status, created_at, updated_at) values (?, ?, ?, ?, ?, ?, ?, ?)",
 		newData.Email, newData.Name, newData.Phone, newData.Address, newData.Password, newData.Status, time.Now(), time.Now()).Error
@@ -63,6 +63,7 @@ func (um UsersModel) AddAccount(newData Users) ([]Go, error) {
 	return res, nil
 
 }
+
 func (um UsersModel) Update(editData Users) ([]Go, error) {
 	var res []Go
 	err := um.DB.Exec("UPDATE users SET name = ? where phone = ?",

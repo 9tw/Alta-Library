@@ -23,8 +23,8 @@ type Res struct {
 	ISBN   string
 	Author string
 	Image  string
-	Status int
-	UserID int
+	Info   string
+	Name   string
 }
 
 type BooksModel struct {
@@ -33,7 +33,17 @@ type BooksModel struct {
 
 func (bm BooksModel) GetAll() ([]Res, error) {
 	var res []Res
-	err := bm.DB.Table("books").Select("id", "title", "isbn", "author", "image", "status", "user_id").Where("deleted_at IS NULL").Model(&Res{}).Find(&res).Error
+	err := bm.DB.Table("books").Select("books.id", "books.title", "books.isbn", "books.author", "books.image", "statb.info", "users.name").Joins("join users on users.id=books.user_id").Joins("join statb on statb.id=books.status").Where("books.deleted_at IS NULL").Model(&Res{}).Find(&res).Error
+	if err != nil {
+		fmt.Println("error on query", err.Error())
+		return nil, err
+	}
+	return res, nil
+}
+
+func (bm BooksModel) GetUnBorrow() ([]Res, error) {
+	var res []Res
+	err := bm.DB.Table("books").Select("books.id", "books.title", "books.isbn", "books.author", "books.image", "statb.info", "users.name").Joins("join users on users.id=books.user_id").Joins("join statb on statb.id=books.status").Where("books.deleted_at IS NULL AND books.status = 0").Model(&Res{}).Find(&res).Error
 	if err != nil {
 		fmt.Println("error on query", err.Error())
 		return nil, err
@@ -43,7 +53,7 @@ func (bm BooksModel) GetAll() ([]Res, error) {
 
 func (bm BooksModel) Search(key string) ([]Res, error) {
 	var res []Res
-	err := bm.DB.Table("books").Select("id", "title", "isbn", "author", "image", "status", "user_id").Where("title LIKE ? AND deleted_at IS NULL", "%"+key+"%").Model(&Books{}).Find(&res).Error
+	err := bm.DB.Table("books").Select("books.id", "books.title", "books.isbn", "books.author", "books.image", "statb.info", "users.name").Joins("join users on users.id=books.user_id").Joins("join statb on statb.id=books.status").Where("books.title LIKE ? AND books.deleted_at IS NULL", "%"+key+"%").Model(&Books{}).Find(&res).Error
 	if err != nil {
 		fmt.Println("error on query", err.Error())
 		return nil, err
