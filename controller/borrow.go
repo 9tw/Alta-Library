@@ -22,7 +22,7 @@ func (bc BorrowsController) ListBorrow(id int) ([]model.Result, error) {
 	return res, nil
 }
 
-func (bc BorrowsController) ReturnBook(book_id int, user_id int) error {
+func (bc BorrowsController) ReturnBook(book_id, user_id int) error {
 	err := bc.Model.Return(book_id, user_id)
 	if err != nil {
 		return nil

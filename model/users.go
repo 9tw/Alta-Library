@@ -15,24 +15,24 @@ type Users struct {
 	Phone    string
 	Address  string
 	Password string
-	Status   string
+	Status   int
 }
 
-type Res struct {
+type Ress struct {
 	Email    string
 	Name     string
 	Phone    string
 	Address  string
 	Password string
-	Status   string
+	Status   int
 }
 
 type UsersModel struct {
 	DB *gorm.DB
 }
 
-func (um UsersModel) GetAll() ([]Res, error) {
-	var res []Res
+func (um UsersModel) GetAll() ([]Ress, error) {
+	var res []Ress
 	err := um.DB.Table("users").Select("id", "email", "name", "phone", "address", "password", "status").Model(&Users{}).Find(&res).Error
 	if err != nil {
 		fmt.Println("error on query", err.Error())
@@ -41,8 +41,8 @@ func (um UsersModel) GetAll() ([]Res, error) {
 	return res, nil
 }
 
-func (um UsersModel) LoginUser(key, Password string) ([]Res, error) {
-	var res []Res
+func (um UsersModel) LoginUser(key, Password string) ([]Ress, error) {
+	var res []Ress
 	err := um.DB.Table("users").Select("id", "email", "name", "address", "status").Where("email = ? and password = ?", key, Password).Model(&Users{}).Find(&res).Error
 	if err != nil {
 		fmt.Println("error on query", err.Error())
@@ -51,11 +51,12 @@ func (um UsersModel) LoginUser(key, Password string) ([]Res, error) {
 	return res, nil
 
 }
-func (um UsersModel) AddAccount(newData Users) ([]Res, error) {
 
-	var res []Res
-	err := um.DB.Exec("INSERT INTO users (email, name, phone, address, password, status, created_at, updated_at) values (?, ?, ?, ?, ?, ?, ?, ?)",
-		newData.Email, newData.Name, newData.Phone, newData.Address, newData.Password, newData.Status, time.Now(), time.Now()).Error
+func (um UsersModel) AddAccount(newData Users) ([]Ress, error) {
+
+	var res []Ress
+	err := um.DB.Exec("INSERT INTO users (email, name, phone, address, password, status, created_at) values (?, ?, ?, ?, ?, ?, ?)",
+		newData.Email, newData.Name, newData.Phone, newData.Address, newData.Password, 1, time.Now()).Error
 	if err != nil {
 		fmt.Println("error on query", err.Error())
 		return nil, err

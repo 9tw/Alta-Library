@@ -71,7 +71,10 @@ func main() {
 			if err != nil {
 				fmt.Println("Some error on get", err.Error())
 			}
-			fmt.Println(res)
+			fmt.Println("{ID | Title | ISBN | Author | Image | Status | Owner}")
+			for i := 0; i < len(res); i++ {
+				fmt.Println(res[i])
+			}
 		case 2:
 			fmt.Println("--- List All Books in Alta Library ---")
 			fmt.Println("")
@@ -79,14 +82,16 @@ func main() {
 			if err != nil {
 				fmt.Println("Some error on get", err.Error())
 			}
-			fmt.Println(res)
+			fmt.Println("{ID | Title | ISBN | Author | Image | Status | Owner}")
+			for i := 0; i < len(res); i++ {
+				fmt.Println(res[i])
+			}
 		case 3:
 			var email string
 			var name string
 			var phone string
 			var address string
 			var password string
-			var status string
 			fmt.Println("--- Register to Alta Library ---")
 			fmt.Println("")
 			fmt.Print("Email: ")
@@ -99,17 +104,13 @@ func main() {
 			fmt.Scan(&address)
 			fmt.Print("Password: ")
 			fmt.Scan(&password)
-			fmt.Print("Status: ")
-			fmt.Scan(&status)
 			res, err := usersC.Register(model.Users{
-
 				Model:    gorm.Model{},
 				Email:    email,
 				Name:     name,
 				Phone:    phone,
 				Address:  address,
 				Password: password,
-				Status:   status,
 			})
 			//  res, err := usersC.Register(email, name, phone, address, password, status )
 			if err != nil {
@@ -133,66 +134,193 @@ func main() {
 			if err != nil {
 				fmt.Println("some error on get", err.Error())
 			}
-			fmt.Println(res)
-			// for run {
-			// 	fmt.Println("===========================================")
-			// 	fmt.Println("\tWelcome to Alta Library")
-			// 	fmt.Println("===========================================")
-			// 	fmt.Println("")
-			// 	fmt.Println("1. Edit profile")
-			// 	fmt.Println("2. Non Aktif akun")
-			// 	fmt.Println("3. Pinjam Buku")
-			// 	fmt.Println("4. Liat Buku Yang Dipinjam")
-			// 	fmt.Println("5. Tambah Buku")
-			// 	fmt.Println("6. Edit Buku")
-			// 	fmt.Println("7. Hapus Buku")
-			// 	fmt.Println("0. Exit")
-			// 	fmt.Println("")
-			// 	fmt.Print("Enter Input: ")
-			// 	fmt.Scan(&input)
+			if len(res) > 0 {
+				var menu bool = true
+				for menu {
+					fmt.Println("===========================================")
+					fmt.Println("\tWelcome to Alta Library")
+					fmt.Println("===========================================")
+					fmt.Println("")
+					fmt.Println("1. Edit profile")
+					fmt.Println("2. Non Aktif akun")
+					fmt.Println("3. Pinjam Buku")
+					fmt.Println("4. Liat Buku Yang Dipinjam")
+					fmt.Println("5. Tambah Buku")
+					fmt.Println("6. Edit Buku")
+					fmt.Println("7. Hapus Buku")
+					fmt.Println("8. Lihat Semua Buku")
+					fmt.Println("9. Cari Buku")
+					fmt.Println("0. Log Out")
+					fmt.Println("")
+					fmt.Print("Enter Input: ")
+					fmt.Scan(&input)
 
-			// 	switch input {
-			// 	case 1:
-			// 		fmt.Println("==============================")
-			// 		fmt.Println("\tEDIT PROFILE")
-			// 		fmt.Println("==============================")
+					switch input {
+					case 1:
+						fmt.Println("==============================")
+						fmt.Println("\tEDIT PROFILE")
+						fmt.Println("==============================")
 
-			// 	case 2:
-			// 		fmt.Println("================================")
-			// 		fmt.Println("\tNON AKTIF AKUN")
-			// 		fmt.Println("================================")
+					case 2:
+						fmt.Println("================================")
+						fmt.Println("\tNON AKTIF AKUN")
+						fmt.Println("================================")
 
-			// 	case 3:
-			// 		fmt.Println("============================")
-			// 		fmt.Println("\tPINJAM BUKU")
-			// 		fmt.Println("============================")
-
-			// 	case 4:
-			// 		fmt.Println("=========================================")
-			// 		fmt.Println("\tLIHAT BUKU YANG DIPINJAM")
-			// 		fmt.Println("=========================================")
-
-			// 	case 5:
-			// 		fmt.Println("============================")
-			// 		fmt.Println("\tTAMBAH BUKU")
-			// 		fmt.Println("============================")
-
-			// 	case 6:
-			// 		fmt.Println("============================")
-			// 		fmt.Println("\tEDIT BUKU")
-			// 		fmt.Println("============================")
-
-			// 	case 7:
-			// 		fmt.Println("============================")
-			// 		fmt.Println("\tHAPUS BUKU")
-			// 		fmt.Println("============================")
-
-			// 	case 0:
-			// 		clear()
-			// 		run = false
-			// 		fmt.Println("Byee")
-			// 	}
-			// }
+					case 3:
+						fmt.Println("============================")
+						fmt.Println("\tPINJAM BUKU")
+						fmt.Println("============================")
+						fmt.Println("")
+						fmt.Println("Buku yang belum dipinjam:")
+						res, err := booksC.GetUnBorrow()
+						if err != nil {
+							fmt.Println("Some error on get", err.Error())
+						}
+						fmt.Println("{ID | Title | ISBN | Author | Image | Status | Owner}")
+						for i := 0; i < len(res); i++ {
+							fmt.Println(res[i])
+						}
+						var newBorrow model.Borrows
+						fmt.Println("")
+						fmt.Print("Book ID: ")
+						fmt.Scan(&newBorrow.BookID)
+						fmt.Print("User ID: ")
+						fmt.Scan(&newBorrow.UserID)
+						er := borrowsC.BorrowBook(newBorrow)
+						if err != nil {
+							fmt.Println("Some error on get", er.Error())
+						}
+						fmt.Println("Borrow Book Success")
+					case 4:
+						fmt.Println("=========================================")
+						fmt.Println("\tLIHAT BUKU YANG DIPINJAM")
+						fmt.Println("=========================================")
+						var user_id int
+						var book_id int
+						var ans string
+						fmt.Println("")
+						fmt.Print("User ID: ")
+						fmt.Scan(&user_id)
+						res, err := borrowsC.ListBorrow(user_id)
+						if err != nil {
+							fmt.Println("Some error on get", err.Error())
+						}
+						fmt.Println("{ID | Title | ISBN | Author | Image | Status | Owner}")
+						for i := 0; i < len(res); i++ {
+							fmt.Println(res[i])
+						}
+						if len(res) > 0 {
+							fmt.Print("Return Book? [Y/N] ")
+							fmt.Scan(&ans)
+							if ans == "Y" || ans == "y" {
+								fmt.Print("Book ID: ")
+								fmt.Scan(&book_id)
+								err := borrowsC.ReturnBook(book_id, user_id)
+								if err != nil {
+									fmt.Println("Some error on get", err.Error())
+								}
+								fmt.Println("Return Book Success")
+							} else {
+								break
+							}
+						} else {
+							fmt.Println("You're not borrowing any books.")
+						}
+					case 5:
+						fmt.Println("============================")
+						fmt.Println("\tTAMBAH BUKU")
+						fmt.Println("============================")
+						var newBook model.Books
+						fmt.Println("")
+						fmt.Print("Title: ")
+						fmt.Scan(&newBook.Title)
+						fmt.Print("ISBN: ")
+						fmt.Scan(&newBook.ISBN)
+						fmt.Print("Author: ")
+						fmt.Scan(&newBook.Author)
+						fmt.Print("Image: ")
+						fmt.Scan(&newBook.Image)
+						fmt.Print("Owner: ")
+						fmt.Scan(&newBook.UserID)
+						err := booksC.AddBook(newBook)
+						if err != nil {
+							fmt.Println("Some error on get", err.Error())
+						}
+						fmt.Println("Add Book Success")
+					case 6:
+						fmt.Println("============================")
+						fmt.Println("\tEDIT BUKU")
+						fmt.Println("============================")
+						var editBook model.Books
+						fmt.Println("")
+						fmt.Print("Book ID: ")
+						fmt.Scan(&editBook.ID)
+						fmt.Print("Title: ")
+						fmt.Scan(&editBook.Title)
+						fmt.Print("ISBN: ")
+						fmt.Scan(&editBook.ISBN)
+						fmt.Print("Author: ")
+						fmt.Scan(&editBook.Author)
+						fmt.Print("Image: ")
+						fmt.Scan(&editBook.Image)
+						fmt.Print("Owner: ")
+						fmt.Scan(&editBook.UserID)
+						err := booksC.UpdateBook(editBook)
+						if err != nil {
+							fmt.Println("Some error on get", err.Error())
+						}
+						fmt.Println("Update Book Success")
+					case 7:
+						fmt.Println("============================")
+						fmt.Println("\tHAPUS BUKU")
+						fmt.Println("============================")
+						var book_id int
+						fmt.Println("")
+						fmt.Print("Book ID: ")
+						fmt.Scan(&book_id)
+						err := booksC.DeleteBook(book_id)
+						if err != nil {
+							fmt.Println("Some error on get", err.Error())
+						}
+						fmt.Println("Delete Book Success")
+					case 8:
+						fmt.Println("==============================")
+						fmt.Println("\tLIHAT SEMUA BUKU")
+						fmt.Println("==============================")
+						fmt.Println("")
+						res, err := booksC.GetAll()
+						if err != nil {
+							fmt.Println("Some error on get", err.Error())
+						}
+						fmt.Println("{ID | Title | ISBN | Author | Image | Status | Owner}")
+						for i := 0; i < len(res); i++ {
+							fmt.Println(res[i])
+						}
+					case 9:
+						fmt.Println("================================")
+						fmt.Println("\tCARI BUKU")
+						fmt.Println("================================")
+						var keyword string
+						fmt.Println("")
+						fmt.Print("Keyword: ")
+						fmt.Scan(&keyword)
+						res, err := booksC.Search(keyword)
+						if err != nil {
+							fmt.Println("Some error on get", err.Error())
+						}
+						fmt.Println("{ID | Title | ISBN | Author | Image | Status | Owner}")
+						for i := 0; i < len(res); i++ {
+							fmt.Println(res[i])
+						}
+					case 0:
+						clear()
+						menu = false
+						fmt.Println("You're Log Out")
+					}
+				}
+			} else {
+				break
+			}
 		case 0:
 			clear()
 			run = false
