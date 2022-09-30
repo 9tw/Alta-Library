@@ -142,6 +142,9 @@ func main() {
 					fmt.Println("\tWelcome to Alta Library")
 					fmt.Println("===========================================")
 					fmt.Println("")
+					fmt.Println("{ID | Email | Name | Cell Phone | Address}")
+					fmt.Println(res)
+					fmt.Println("")
 					fmt.Println("1. Edit profile")
 					fmt.Println("2. Non Aktif akun")
 					fmt.Println("3. Pinjam Buku")
@@ -316,7 +319,7 @@ func main() {
 						if err != nil {
 							fmt.Println("Some error on get", err.Error())
 						}
-						fmt.Println("{ID | Title | ISBN | Author | Image | Status | Owner}")
+						fmt.Println("{ID | Title | Borrower | Borrow Date | Due Date}")
 						for i := 0; i < len(res); i++ {
 							fmt.Println(res[i])
 						}
@@ -351,7 +354,7 @@ func main() {
 						fmt.Scan(&newBook.Author)
 						fmt.Print("Image: ")
 						fmt.Scan(&newBook.Image)
-						fmt.Print("Owner: ")
+						fmt.Print("Owner ID: ")
 						fmt.Scan(&newBook.UserID)
 						err := booksC.AddBook(newBook)
 						if err != nil {
@@ -362,6 +365,18 @@ func main() {
 						fmt.Println("============================")
 						fmt.Println("\tEDIT BUKU")
 						fmt.Println("============================")
+						var user_id int
+						fmt.Println("")
+						fmt.Print("User ID: ")
+						fmt.Scan(&user_id)
+						res, err := booksC.OwnBook(user_id)
+						if err != nil {
+							fmt.Println("Some error on get", err.Error())
+						}
+						fmt.Println("{ID | Title | ISBN | Author | Image | Status | Owner}")
+						for i := 0; i < len(res); i++ {
+							fmt.Println(res[i])
+						}
 						var editBook model.Books
 						fmt.Println("")
 						fmt.Print("Book ID: ")
@@ -376,22 +391,34 @@ func main() {
 						fmt.Scan(&editBook.Image)
 						fmt.Print("Owner: ")
 						fmt.Scan(&editBook.UserID)
-						err := booksC.UpdateBook(editBook)
-						if err != nil {
-							fmt.Println("Some error on get", err.Error())
+						er := booksC.UpdateBook(editBook)
+						if er != nil {
+							fmt.Println("Some error on get", er.Error())
 						}
 						fmt.Println("Update Book Success")
 					case 7:
 						fmt.Println("============================")
 						fmt.Println("\tHAPUS BUKU")
 						fmt.Println("============================")
+						var user_id int
+						fmt.Println("")
+						fmt.Print("User ID: ")
+						fmt.Scan(&user_id)
+						res, err := booksC.OwnBook(user_id)
+						if err != nil {
+							fmt.Println("Some error on get", err.Error())
+						}
+						fmt.Println("{ID | Title | ISBN | Author | Image | Status | Owner}")
+						for i := 0; i < len(res); i++ {
+							fmt.Println(res[i])
+						}
 						var book_id int
 						fmt.Println("")
 						fmt.Print("Book ID: ")
 						fmt.Scan(&book_id)
-						err := booksC.DeleteBook(book_id)
-						if err != nil {
-							fmt.Println("Some error on get", err.Error())
+						er := booksC.DeleteBook(book_id)
+						if er != nil {
+							fmt.Println("Some error on get", er.Error())
 						}
 						fmt.Println("Delete Book Success")
 					case 8:

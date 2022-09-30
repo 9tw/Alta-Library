@@ -51,6 +51,16 @@ func (bm BooksModel) GetUnBorrow() ([]Res, error) {
 	return res, nil
 }
 
+func (bm BooksModel) OwnBook(id int) ([]Res, error) {
+	var res []Res
+	err := bm.DB.Table("books").Select("books.id", "books.title", "books.isbn", "books.author", "books.image", "statb.info", "users.name").Joins("join users on users.id=books.user_id").Joins("join statb on statb.id=books.status").Where("books.deleted_at IS NULL AND books.status = 0 AND users.id = ?", id).Model(&Res{}).Find(&res).Error
+	if err != nil {
+		fmt.Println("error on query", err.Error())
+		return nil, err
+	}
+	return res, nil
+}
+
 func (bm BooksModel) Search(key string) ([]Res, error) {
 	var res []Res
 	err := bm.DB.Table("books").Select("books.id", "books.title", "books.isbn", "books.author", "books.image", "statb.info", "users.name").Joins("join users on users.id=books.user_id").Joins("join statb on statb.id=books.status").Where("books.title LIKE ? AND books.deleted_at IS NULL", "%"+key+"%").Model(&Books{}).Find(&res).Error
